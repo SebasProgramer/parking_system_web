@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +106,7 @@ class HomeScreen extends StatelessWidget {
                               SizedBox(width: 10.0),
                               Expanded(
                                 child: TextField(
+                                  controller: emailController,
                                   decoration: InputDecoration(
                                     labelText: 'Email',
                                     border: OutlineInputBorder(),
@@ -119,6 +123,7 @@ class HomeScreen extends StatelessWidget {
                               SizedBox(width: 10.0),
                               Expanded(
                                 child: TextField(
+                                  controller: passwordController,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
                                     border: OutlineInputBorder(),
@@ -132,7 +137,28 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(height: 20.0),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/dashboard');
+                              // Validar las credenciales
+                              if (emailController.text == 'usuario@gmail.com' && passwordController.text == '123456') {
+                                Navigator.pushNamed(context, '/dashboard');
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Error de inicio de sesión'),
+                                      content: Text('El correo electrónico o la contraseña son incorrectos.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: Text('Iniciar Sesión', style: TextStyle(color: Colors.white)),
                             style: ButtonStyle(

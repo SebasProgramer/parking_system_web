@@ -1,4 +1,19 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class ApiService {
+  final String baseUrl = 'https://parkingsystem-hjcb.onrender.com';
+
+  Future<List<dynamic>> fetchData(String endpoint) async {
+    final response = await http.get(Uri.parse('$baseUrl/$endpoint'));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+}
 
 void main() {
   runApp(MyApp());
@@ -14,17 +29,48 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final ApiService _apiService = ApiService();
+  List<dynamic> _autos = [];
+  List<dynamic> _garajes = [];
+  List<dynamic> _reservaciones = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      final autos = await _apiService.fetchData('autos/getAllAutos');
+      final garajes = await _apiService.fetchData('garajes/getAllGarajes');
+      final reservaciones = await _apiService.fetchData('reservaciones/getAllReservaciones');
+      setState(() {
+        _autos = autos;
+        _garajes = garajes;
+        _reservaciones = reservaciones;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height, // Establece la altura del Container igual a la altura de la pantalla
+            height: MediaQuery.of(context).size.height,
             child: Container(
-              width: 200.0, 
-              color: Color.fromARGB(255, 156, 44, 44), // Color de fondo bg-zinc-900
+              width: 200.0,
+              color: Color.fromARGB(255, 156, 44, 44),
               padding: EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,19 +80,18 @@ class Dashboard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 255, 255, 255), // Cambio de color a blanco
+                      color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),
                   Text(
                     'Parking System',
                     style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.white, // Cambio de color a blanco
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(height: 20.0),
                   NavItem(icon: '🏠', title: 'Dashboard'),
-                  // Agrega más elementos de navegación aquí si es necesario
                 ],
               ),
             ),
@@ -72,17 +117,18 @@ class Dashboard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DashboardCard(
-                          title: 'Recent Candidates',
-                          backgroundColor: Color(0xFF11151A), // Color de fondo bg-zinc-700
+                          title: 'Autos',
+                          backgroundColor: Color(0xFF11151A),
                           textColor: Colors.white,
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Recent Candidates',
-                                style: TextStyle(fontSize: 16.0),
+                                'Autos',
+                                style: TextStyle(fontSize: 16.0, color: Colors.white),
                               ),
-                              // Agrega contenido para los candidatos recientes si es necesario
+                              SizedBox(height: 10.0),
+                              ..._autos.map((auto) => Text('Placa: ${auto['placa']}', style: TextStyle(color: Colors.white)))
                             ],
                           ),
                         ),
@@ -90,17 +136,18 @@ class Dashboard extends StatelessWidget {
                       SizedBox(width: 10.0),
                       Expanded(
                         child: DashboardCard(
-                          title: 'Recent Open Positions',
-                          backgroundColor: Color(0xFF11151A), // Color de fondo bg-zinc-700
+                          title: 'Garajes',
+                          backgroundColor: Color(0xFF11151A),
                           textColor: Colors.white,
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Recent Open Positions',
-                                style: TextStyle(fontSize: 16.0),
+                                'Garajes',
+                                style: TextStyle(fontSize: 16.0, color: Colors.white),
                               ),
-                              // Agrega contenido para las posiciones abiertas recientes si es necesario
+                              SizedBox(height: 10.0),
+                              ..._garajes.map((garaje) => Text('Dirección: ${garaje['direccion']}', style: TextStyle(color: Colors.white)))
                             ],
                           ),
                         ),
@@ -112,75 +159,18 @@ class Dashboard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DashboardCard(
-                          title: 'Estadísticas de Uso',
+                          title: 'Reservaciones',
                           backgroundColor: Color(0xFF11151A),
                           textColor: Colors.white,
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Estadísticas de Uso',
-                                style: TextStyle(fontSize: 16.0),
+                                'Reservaciones',
+                                style: TextStyle(fontSize: 16.0, color: Colors.white),
                               ),
-                              // Agrega contenido para las estadísticas de uso si es necesario
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Uso Actual',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Uso Actual',
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              // Agrega contenido para el uso actual si es necesario
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Top 20 Clientes',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Top 20 Clientes',
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              // Agrega contenido para los top 20 clientes si es necesario
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Top 20 Ofertantes',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Top 20 Ofertantes',
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              // Agrega contenido para los top 20 ofertantes si es necesario
+                              SizedBox(height: 10.0),
+                              ..._reservaciones.map((reservacion) => Text('ID: ${reservacion['id']}', style: TextStyle(color: Colors.white)))
                             ],
                           ),
                         ),
@@ -196,9 +186,8 @@ class Dashboard extends StatelessWidget {
                             children: [
                               Text(
                                 'Contenido de otro Dashboard Card',
-                                style: TextStyle(fontSize: 16.0),
+                                style: TextStyle(fontSize: 16.0, color: Colors.white),
                               ),
-                              // Agrega contenido para otro dashboard card si es necesario
                             ],
                           ),
                         ),
@@ -214,9 +203,8 @@ class Dashboard extends StatelessWidget {
                             children: [
                               Text(
                                 'Contenido de otro Dashboard Card',
-                                style: TextStyle(fontSize: 16.0),
+                                style: TextStyle(fontSize: 16.0, color: Colors.white),
                               ),
-                              // Agrega contenido para otro dashboard card si es necesario
                             ],
                           ),
                         ),
@@ -249,53 +237,53 @@ class NavItem extends StatelessWidget {
           children: [
             Text(icon, style: TextStyle(fontSize: 20.0)),
             SizedBox(width: 10.0),
-            Text(title, style: TextStyle(color: Colors.white)), // Cambio de color a blanco
-          ],
-        ),
-      ),
-    );
-  }
+            Text(title, style: TextStyle(color: Colors.white)),
+         ],
+       ),
+     ),
+   );
+ }
 }
 
 class DashboardCard extends StatelessWidget {
-  final String icon;
-  final String title;
-  final String value;
-  final Color backgroundColor;
-  final Color textColor;
-  final Widget content;
+ final String icon;
+ final String title;
+ final String value;
+ final Color backgroundColor;
+ final Color textColor;
+ final Widget content;
 
-  DashboardCard({
-    this.icon = '',
-    required this.title,
-    this.value = '',
-    this.backgroundColor = Colors.white,
-    this.textColor = Colors.black,
-    required this.content,
-  });
+ DashboardCard({
+   this.icon = '',
+   required this.title,
+   this.value = '',
+   this.backgroundColor = Colors.white,
+   this.textColor = Colors.black,
+   required this.content,
+ });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(10.0), // Redondea los bordes del card
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(icon, style: TextStyle(fontSize: 20.0, color: textColor)),
-              SizedBox(width: 10.0),
-              Text(title, style: TextStyle(color: textColor)),
-            ],
-          ),
-          SizedBox(height: 10.0),
-          content,
-        ],
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Container(
+     padding: EdgeInsets.all(10.0),
+     decoration: BoxDecoration(
+       color: backgroundColor,
+       borderRadius: BorderRadius.circular(10.0),
+     ),
+     child: Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
+       children: [
+         Row(
+           children: [
+             Text(icon, style: TextStyle(fontSize: 20.0, color: textColor)),
+             SizedBox(width: 10.0),
+             Text(title, style: TextStyle(color: textColor)),
+           ],
+         ),
+         SizedBox(height: 10.0),
+         content,
+       ],
+     ),
+   );
+ }
 }
