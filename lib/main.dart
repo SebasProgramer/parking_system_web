@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vph_web_date_picker/vph_web_date_picker.dart';
+import 'dashboard.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,260 +10,188 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      // Navega a Dashboard si la ruta no se encuentra
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return MaterialPageRoute(builder: (context) => HomeScreen());
+        } else if (settings.name == '/dashboard') {
+          return MaterialPageRoute(builder: (context) => Dashboard());
+        }
+        return MaterialPageRoute(builder: (context) => NotFoundScreen());
+      },
+      initialRoute: '/',
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(), // Eliminamos la propiedad title del AppBar
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Card(
+            elevation: 8.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8, // Ancho máximo del Card
+              height: 600, // Altura máxima del Card
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      color: Colors.grey[100],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Parking System',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            'Una manera distinta de mejorar tu vida',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey[600],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 1.0),
+                          Image.asset(
+                            'assets/univalle.jpg',
+                            width: 300,
+                            height: 300,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Inicia Sesión',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Row(
+                            children: [
+                              Icon(Icons.email, color: Colors.grey[800]),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Email',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0), // Relleno interno
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.0),
+                          Row(
+                            children: [
+                              Icon(Icons.lock, color: Colors.grey[800]),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Password',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0), // Relleno interno
+                                  ),
+                                  obscureText: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/dashboard');
+                            },
+                            child: Text('Iniciar Sesión', style: TextStyle(color: Colors.white)),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 156, 44, 44)),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Row(
+                            children: [
+                              Expanded(child: Divider(color: Colors.grey[300])),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'OR',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.grey[400],
+                                  ),
+                                ),
+                              ),
+                              Expanded(child: Divider(color: Colors.grey[300])),
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
+                          Center(
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "No tienes una cuenta? Crear cuenta",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 156, 44, 44),
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late DateTime _selectedDate = DateTime.now();
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: _selectedDate.toString());
-  }
-
+class NotFoundScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF942222),
-        title: Center(
-          child: Text(
-            'Parking System Dashboard',
-            textAlign: TextAlign.center,
-          ),
-        ),
+        title: Text('404 Not Found'),
       ),
-      backgroundColor: Color(0xFFFaf5e6),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            color: Color(0xFFFaf5e6),
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 8.0),
-                Text(
-                  'Selecciona la Fecha',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 450.0),
-                  child: TextField(
-                    controller: _controller,
-                    readOnly: true,
-                    onTap: () async {
-                      final pickedDate = await showWebDatePicker(
-                        context: context,
-                        initialDate: _selectedDate,
-                        firstDate: DateTime(2010),
-                        lastDate:
-                            DateTime.now().add(const Duration(days: 14000)),
-                        width: 300,
-                      );
-                      if (pickedDate != null) {
-                        setState(() {
-                          _selectedDate = pickedDate;
-                          _controller.text = pickedDate.toString();
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Fecha',
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  color: Color(0xFFFaf5e6),
-                  child: GridView.count(
-                    crossAxisCount: 4,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      DashboardCard(
-                        title: 'Estadísticas de uso',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Uso actual',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Promedios de precios',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      _buildRejectionsCard(
-                        title: 'Rechazos por cliente',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      _buildRejectionsCard(
-                        title: 'Rechazos por ofertantes',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Top 20 Ofertantes',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Top 20 Clientes',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Ofertantes con peores calificaciones',
-                        value: '...',
-                        percentage: '',
-                      ),
-                      DashboardCard(
-                        title: 'Clientes con peores calificaciones',
-                        value: '...',
-                        percentage: '',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRejectionsCard({
-    required String title,
-    required String value,
-    required String percentage,
-  }) {
-    return Card(
-      color: Colors.white,
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  percentage,
-                  style: TextStyle(
-                    fontSize: 10.0,
-                  ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  'vs 30 días anteriores',
-                  style: TextStyle(fontSize: 10.0, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 8.0), // Espacio entre el contenido y el botón
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Acción cuando se presiona el botón "Ver más"
-              },
-              child: Text('Ver más'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class DashboardCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final String percentage;
-
-  DashboardCard({
-    required this.title,
-    required this.value,
-    required this.percentage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              percentage,
-              style: TextStyle(
-                fontSize: 10.0,
-              ),
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              'vs 30 días anteriores',
-              style: TextStyle(fontSize: 10.0, color: Colors.grey),
-            ),
-          ],
-        ),
+      body: Center(
+        child: Text('404 - Page Not Found'),
       ),
     );
   }
