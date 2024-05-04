@@ -100,121 +100,137 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Hello, Bro 👋',
-                    style: TextStyle(fontSize: 24.0),
-                  ),
-                  Text(
-                    'Bienvenido al Dashboard de Parking System',
-                    style: TextStyle(fontSize: 14.0),
-                  ),
-                  SizedBox(height: 20.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Autos',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Autos',
-                                style: TextStyle(fontSize: 16.0, color: Colors.white),
-                              ),
-                              SizedBox(height: 10.0),
-                              ..._autos.map((auto) => Text('Placa: ${auto['placa']}', style: TextStyle(color: Colors.white)))
-                            ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.0),
+                    Text(
+                      'Hello, Bro 👋',
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                    Text(
+                      'Bienvenido al Dashboard de Parking System',
+                      style: TextStyle(fontSize: 14.0),
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DashboardCard(
+                            title: 'Autos',
+                            backgroundColor: Color(0xFF11151A),
+                            textColor: Colors.white,
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                
+                                SizedBox(height: 10.0),
+                                ..._autos.map((auto) => Text('Placa: ${auto['placa']}', style: TextStyle(color: Colors.white)))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Garajes',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Garajes',
-                                style: TextStyle(fontSize: 16.0, color: Colors.white),
-                              ),
-                              SizedBox(height: 10.0),
-                              ..._garajes.map((garaje) => Text('Dirección: ${garaje['direccion']}', style: TextStyle(color: Colors.white)))
-                            ],
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child: DashboardCard(
+                            title: 'Garajes',
+                            backgroundColor: Color(0xFF11151A),
+                            textColor: Colors.white,
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [                                
+                                SizedBox(height: 10.0),
+                                ..._garajes.map((garaje) => Text('Dirección: ${garaje['direccion']}', style: TextStyle(color: Colors.white)))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Reservaciones',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Reservaciones',
-                                style: TextStyle(fontSize: 16.0, color: Colors.white),
-                              ),
-                              SizedBox(height: 10.0),
-                              ..._reservaciones.map((reservacion) => Text('ID: ${reservacion['id']}', style: TextStyle(color: Colors.white)))
-                            ],
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DashboardCard(
+                            title: 'Reservaciones',
+                            backgroundColor: Color(0xFF11151A),
+                            textColor: Colors.white,
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [                               
+                                SizedBox(height: 10.0),
+                                ..._reservaciones.map((reservacion) => Text('ID: ${reservacion['id']}', style: TextStyle(color: Colors.white)))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Otro Dashboard Card',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Contenido de otro Dashboard Card',
-                                style: TextStyle(fontSize: 16.0, color: Colors.white),
-                              ),
-                            ],
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child: DashboardCard(
+                            title: 'Otro Dashboard Card',
+                            backgroundColor: Color(0xFF11151A),
+                            textColor: Colors.white,
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Contenido de otro Dashboard Card',
+                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: DashboardCard(
-                          title: 'Otro Dashboard Card',
-                          backgroundColor: Color(0xFF11151A),
-                          textColor: Colors.white,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Contenido de otro Dashboard Card',
-                                style: TextStyle(fontSize: 16.0, color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 10.0),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardCard extends StatelessWidget {
+  final String title;
+  final Color backgroundColor;
+  final Color textColor;
+  final Widget content;
+
+  const DashboardCard({
+    Key? key,
+    required this.title,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.content,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
+          ),
+          SizedBox(height: 10.0),
+          content,
         ],
       ),
     );
@@ -225,65 +241,29 @@ class NavItem extends StatelessWidget {
   final String icon;
   final String title;
 
-  NavItem({required this.icon, required this.title});
+  const NavItem({
+    Key? key,
+    required this.icon,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          children: [
-            Text(icon, style: TextStyle(fontSize: 20.0)),
-            SizedBox(width: 10.0),
-            Text(title, style: TextStyle(color: Colors.white)),
-         ],
-       ),
-     ),
-   );
- }
-}
-
-class DashboardCard extends StatelessWidget {
- final String icon;
- final String title;
- final String value;
- final Color backgroundColor;
- final Color textColor;
- final Widget content;
-
- DashboardCard({
-   this.icon = '',
-   required this.title,
-   this.value = '',
-   this.backgroundColor = Colors.white,
-   this.textColor = Colors.black,
-   required this.content,
- });
-
- @override
- Widget build(BuildContext context) {
-   return Container(
-     padding: EdgeInsets.all(10.0),
-     decoration: BoxDecoration(
-       color: backgroundColor,
-       borderRadius: BorderRadius.circular(10.0),
-     ),
-     child: Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
-       children: [
-         Row(
-           children: [
-             Text(icon, style: TextStyle(fontSize: 20.0, color: textColor)),
-             SizedBox(width: 10.0),
-             Text(title, style: TextStyle(color: textColor)),
-           ],
-         ),
-         SizedBox(height: 10.0),
-         content,
-       ],
-     ),
-   );
- }
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Text(
+            icon,
+            style: TextStyle(fontSize: 20.0),
+          ),
+          SizedBox(width: 10.0),
+          Text(
+            title,
+            style: TextStyle(fontSize: 16.0),
+          ),
+        ],
+      ),
+    );
+  }
 }
