@@ -6,31 +6,34 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200.0,
-      color: const Color.fromARGB(255, 156, 44, 44),
-      padding: const EdgeInsets.all(10.0),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Dashboard',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 255, 255, 255),
+    return Drawer(
+      child: Container(
+        color: const Color.fromARGB(255, 204, 50, 50),
+        child: ListView(
+          padding: const EdgeInsets.all(10.0),
+          children: const <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              child: Text(
+                'Dashboard',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
-          Text(
-            'Parking System',
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.white,
+            Text(
+              'Parking System',
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white70,
+              ),
             ),
-          ),
-          SizedBox(height: 20.0),
-          NavItem(icon: '🏠', title: 'Dashboard'),
-        ],
+            SizedBox(height: 30.0),
+            NavItem(icon: '🏠', title: 'Dashboard'),
+          ],
+        ),
       ),
     );
   }
