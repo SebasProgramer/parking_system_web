@@ -3,7 +3,6 @@ import 'package:parking_web/Controllers/dashboard_controller.dart';
 import 'package:parking_web/Views/Components/Widgets/dynamic_list_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/header_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/sidebar_widget.dart';
-import 'package:parking_web/Views/Components/dashboard_card.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -88,23 +87,7 @@ class _DashboardState extends State<Dashboard> {
                             displayFunction: (reservacion) => 'ID: ${reservacion['id']}',
                           ),
                         ),
-                        const SizedBox(width: 10.0),
-                        const Expanded(
-                          child: DashboardCard(
-                            title: 'Otro Dashboard Card',
-                            backgroundColor: Color(0xFF11151A),
-                            textColor: Colors.white,
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Contenido de otro Dashboard Card',
-                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        const SizedBox(width: 10.0), 
                       ],
                     ),
                   ],
