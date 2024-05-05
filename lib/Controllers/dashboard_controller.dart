@@ -15,24 +15,33 @@ class DashboardController {
     return await _apiService.fetchData('reservaciones/getAllReservaciones');
   }
 
-  Future<int> getTotalConfirmadas() async {
+  Future<List<dynamic>> getTotalConfirmadas() async {
     var data = await _apiService.fetchData('dashboard/getTotalConfirmadas');
-    return data['totalConfirmadas'];
+    return List<dynamic>.from(data.map((item) => {
+      "id": item['id'],
+      "nombre": item['nombre'],
+      "total_reservaciones_confirmadas": int.parse(item['total_reservaciones_confirmadas'])
+    }));
   }
 
-  Future<int> getTotalRechazadas() async {
+  Future<List<dynamic>> getTotalRechazadas() async {
     var data = await _apiService.fetchData('dashboard/getTotalRechazadas');
-    return data['totalRechazadas']; 
+    return List<dynamic>.from(data.map((item) => {
+      "id": item['id'],
+      "nombre": item['nombre'],
+      "total_reservaciones_rechazadas": int.parse(item['total_reservaciones_rechazadas'])
+    }));
   }
 
   Future<int> getTotalGarajesDisponibles() async {
-    var data = await _apiService.fetchData('dashboard/getTotalGarajesDisponibles');
-    return data['totalDisponibles']; 
+    var data =
+        await _apiService.fetchData('dashboard/getTotalGarajesDisponibles');
+    return int.parse(data['cantidad_disponibles'].toString());
   }
 
   Future<int> getTotalGarajesOcupados() async {
     var data = await _apiService.fetchData('dashboard/getTotalGarajesOcupados');
-    return data['totalOcupados']; 
+    return int.parse(data['cantidad_ocupados'].toString());
   }
 
   Future<List<dynamic>> getRechazosPorCliente() async {

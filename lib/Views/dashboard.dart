@@ -3,6 +3,7 @@ import 'package:parking_web/Controllers/dashboard_controller.dart';
 import 'package:parking_web/Views/Components/Widgets/dynamic_list_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/header_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/sidebar_widget.dart';
+import 'package:parking_web/Views/Components/Widgets/stadistic_widget.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,6 +36,8 @@ class _DashboardState extends State<Dashboard> {
   List<dynamic> _peoresClientes = [];
   List<dynamic> _peoresOfertantes = [];
 
+  List<dynamic> _confirmadas = [];
+  List<dynamic> _rechazadas = [];
   @override
   void initState() {
     super.initState();
@@ -51,6 +54,10 @@ class _DashboardState extends State<Dashboard> {
     _topOfertantes = await _controller.getTopOfertantes();
     _peoresClientes = await _controller.getTopClientesMalos();
     _peoresOfertantes = await _controller.getTopOfertantesMalos();
+
+    _confirmadas = await _controller.getTotalConfirmadas();
+    _rechazadas = await _controller.getTotalRechazadas();
+
     setState(() {});
   }
 
@@ -107,6 +114,38 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                     //Parte de los requerimientos
+                    //Totales
+                    StatisticWidget(
+                      title: 'Total Garajes Disponibles',
+                      fetchDataFunction: _controller.getTotalGarajesDisponibles,
+                    ),
+                    StatisticWidget(
+                      title: 'Total Garajes Ocupados',
+                      fetchDataFunction: _controller.getTotalGarajesOcupados,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Reservaciones Confirmadas',
+                            items: _confirmadas,
+                            displayFunction: (item) =>
+                                '${item['nombre']} - Confirmadas: ${item['total_reservaciones_confirmadas']}',
+                          ),
+                        ),
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Reservaciones Rechazadas',
+                            items: _rechazadas,
+                            displayFunction: (item) =>
+                                '${item['nombre']} - Rechazadas: ${item['total_reservaciones_rechazadas']}',
+                          ),
+                        )
+                      ],
+                    ),
+                    //Rechazos
+
+                    //Tops
                     DynamicListWidget(
                       title: 'Top 20 Clientes',
                       items: _topClientes,
