@@ -218,6 +218,12 @@ class _DashboardState extends State<Dashboard> {
                         )
                       ],
                     ),
+                    DynamicListWidget(
+                      title: 'Promedio precio garajes',
+                      items: _garajes,
+                      displayFunction: (garaje) =>
+                          'Dirección: ${garaje['direccion']} - Promedio: ${garaje['promedio_precio_confirmado']}',
+                    ),
                   ],
                 ),
               ),
