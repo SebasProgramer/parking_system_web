@@ -4,7 +4,6 @@ import 'package:parking_web/Views/Components/Widgets/dynamic_list_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/header_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/sidebar_widget.dart';
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,6 +29,12 @@ class _DashboardState extends State<Dashboard> {
   List<dynamic> _garajes = [];
   List<dynamic> _reservaciones = [];
 
+  //Lo que esta en los requerimientos
+  List<dynamic> _topClientes = [];
+  List<dynamic> _topOfertantes = [];
+  List<dynamic> _peoresClientes = [];
+  List<dynamic> _peoresOfertantes = [];
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +45,12 @@ class _DashboardState extends State<Dashboard> {
     _autos = await _controller.getAutos();
     _garajes = await _controller.getGarajes();
     _reservaciones = await _controller.getReservaciones();
+
+    //Loque esta en los requerimientos
+    _topClientes = await _controller.getTopClientes();
+    _topOfertantes = await _controller.getTopOfertantes();
+    _peoresClientes = await _controller.getTopClientesMalos();
+    _peoresOfertantes = await _controller.getTopOfertantesMalos();
     setState(() {});
   }
 
@@ -57,14 +68,17 @@ class _DashboardState extends State<Dashboard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const HeaderWidget(title: 'Hello, Bro 👋', subtitle: 'Bienvenido al Dashboard de Parking System'),
+                    const HeaderWidget(
+                        title: 'Hello, Bro 👋',
+                        subtitle: 'Bienvenido al Dashboard de Parking System'),
                     Row(
                       children: [
                         Expanded(
                           child: DynamicListWidget(
                             title: 'Autos',
                             items: _autos,
-                            displayFunction: (auto) => 'Placa: ${auto['placa']}',
+                            displayFunction: (auto) =>
+                                'Placa: ${auto['placa']}',
                           ),
                         ),
                         const SizedBox(width: 10.0),
@@ -72,7 +86,8 @@ class _DashboardState extends State<Dashboard> {
                           child: DynamicListWidget(
                             title: 'Garajes',
                             items: _garajes,
-                            displayFunction: (garaje) => 'Dirección: ${garaje['direccion']}',
+                            displayFunction: (garaje) =>
+                                'Dirección: ${garaje['direccion']}',
                           ),
                         ),
                       ],
@@ -84,11 +99,37 @@ class _DashboardState extends State<Dashboard> {
                           child: DynamicListWidget(
                             title: 'Reservaciones',
                             items: _reservaciones,
-                            displayFunction: (reservacion) => 'ID: ${reservacion['id']}',
+                            displayFunction: (reservacion) =>
+                                'ID: ${reservacion['id']}',
                           ),
                         ),
-                        const SizedBox(width: 10.0), 
+                        const SizedBox(width: 10.0),
                       ],
+                    ),
+                    //Parte de los requerimientos
+                    DynamicListWidget(
+                      title: 'Top 20 Clientes',
+                      items: _topClientes,
+                      displayFunction: (cliente) =>
+                          '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                    ),
+                    DynamicListWidget(
+                      title: 'Top 20 Ofertantes',
+                      items: _topOfertantes,
+                      displayFunction: (ofertante) =>
+                          '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                    ),
+                    DynamicListWidget(
+                      title: 'Peores Clientes',
+                      items: _peoresClientes,
+                      displayFunction: (cliente) =>
+                          '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                    ),
+                    DynamicListWidget(
+                      title: 'Peores Ofertantes',
+                      items: _peoresOfertantes,
+                      displayFunction: (ofertante) =>
+                          '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
                     ),
                   ],
                 ),
