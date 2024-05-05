@@ -5,10 +5,10 @@ class StatisticWidget extends StatelessWidget {
   final Future<int> Function() fetchDataFunction;
 
   const StatisticWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.fetchDataFunction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,13 @@ class StatisticWidget extends StatelessWidget {
       future: fetchDataFunction(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           return ListTile(
             title: Text(title),
-            trailing: Text(snapshot.data.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: Text(snapshot.data.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
           );
         }
       },

@@ -44,12 +44,14 @@ class DashboardController {
     return int.parse(data['cantidad_ocupados'].toString());
   }
 
-  Future<List<dynamic>> getRechazosPorCliente() async {
-    return await _apiService.fetchData('dashboard/getRechazosPorCliente');
+  Future<int> getRechazosPorOfertantes() async {
+    var data = await _apiService.fetchData('dashboard/getRechazosPorOfertantes');
+    return int.parse(data['rechazos_ofertantes'].toString()); 
   }
 
-  Future<List<dynamic>> getRechazosPorOfertantes() async {
-    return await _apiService.fetchData('dashboard/getRechazosPorOfertantes');
+  Future<int> getRechazosPorCliente() async {
+    var data = await _apiService.fetchData('dashboard/getRechazosPorCliente');
+    return int.parse(data['rechazos_cliente'].toString());  
   }
 
   Future<List<dynamic>> getTopClientes() async {

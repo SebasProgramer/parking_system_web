@@ -115,13 +115,24 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     //Parte de los requerimientos
                     //Totales
-                    StatisticWidget(
-                      title: 'Total Garajes Disponibles',
-                      fetchDataFunction: _controller.getTotalGarajesDisponibles,
-                    ),
-                    StatisticWidget(
-                      title: 'Total Garajes Ocupados',
-                      fetchDataFunction: _controller.getTotalGarajesOcupados,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: StatisticWidget(
+                            title: 'Total Garajes Disponibles',
+                            fetchDataFunction:
+                                _controller.getTotalGarajesDisponibles,
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          child: StatisticWidget(
+                            title: 'Total Garajes Ocupados',
+                            fetchDataFunction:
+                                _controller.getTotalGarajesOcupados,
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
@@ -133,6 +144,7 @@ class _DashboardState extends State<Dashboard> {
                                 '${item['nombre']} - Confirmadas: ${item['total_reservaciones_confirmadas']}',
                           ),
                         ),
+                        const SizedBox(width: 10.0),
                         Expanded(
                           child: DynamicListWidget(
                             title: 'Reservaciones Rechazadas',
@@ -144,31 +156,67 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                     //Rechazos
-
+                    Row(
+                      children: [
+                        Expanded(
+                          child: StatisticWidget(
+                            title: 'Total Rechazados por Cliente',
+                            fetchDataFunction:
+                                _controller.getRechazosPorCliente,
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          child: StatisticWidget(
+                            title: 'Total Rechazados por Ofertante',
+                            fetchDataFunction:
+                                _controller.getRechazosPorOfertantes,
+                          ),
+                        )
+                      ],
+                    ),
                     //Tops
-                    DynamicListWidget(
-                      title: 'Top 20 Clientes',
-                      items: _topClientes,
-                      displayFunction: (cliente) =>
-                          '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Top 20 Clientes',
+                            items: _topClientes,
+                            displayFunction: (cliente) =>
+                                '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Top 20 Ofertantes',
+                            items: _topOfertantes,
+                            displayFunction: (ofertante) =>
+                                '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                          ),
+                        )
+                      ],
                     ),
-                    DynamicListWidget(
-                      title: 'Top 20 Ofertantes',
-                      items: _topOfertantes,
-                      displayFunction: (ofertante) =>
-                          '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
-                    ),
-                    DynamicListWidget(
-                      title: 'Peores Clientes',
-                      items: _peoresClientes,
-                      displayFunction: (cliente) =>
-                          '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
-                    ),
-                    DynamicListWidget(
-                      title: 'Peores Ofertantes',
-                      items: _peoresOfertantes,
-                      displayFunction: (ofertante) =>
-                          '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Peores Clientes',
+                            items: _peoresClientes,
+                            displayFunction: (cliente) =>
+                                '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          child: DynamicListWidget(
+                            title: 'Peores Ofertantes',
+                            items: _peoresOfertantes,
+                            displayFunction: (ofertante) =>
+                                '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
