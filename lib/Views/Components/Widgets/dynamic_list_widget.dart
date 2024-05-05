@@ -7,16 +7,16 @@ class DynamicListWidget extends StatelessWidget {
   final String Function(dynamic) displayFunction;
 
   const DynamicListWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.items,
     required this.displayFunction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300.0, // Asegura que todos los DynamicListWidgets tengan el mismo tamaño
+    return SizedBox(
+      height: 300.0,
       child: Row(
         children: [
           Expanded(
