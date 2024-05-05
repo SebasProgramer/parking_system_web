@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import 'package:parking_web/Views/dashboard.dart';
 
 void main() {
   runApp(MyApp());
