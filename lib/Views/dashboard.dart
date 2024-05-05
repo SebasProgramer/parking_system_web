@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parking_web/Controllers/dashboard_controller.dart';
+import 'package:parking_web/Views/Components/Widgets/custom_row_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/dynamic_list_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/header_widget.dart';
 import 'package:parking_web/Views/Components/Widgets/sidebar_widget.dart';
@@ -28,7 +29,6 @@ class _DashboardState extends State<Dashboard> {
   final DashboardController _controller = DashboardController();
   List<dynamic> _autos = [];
   List<dynamic> _garajes = [];
-  List<dynamic> _reservaciones = [];
 
   //Lo que esta en los requerimientos
   List<dynamic> _topClientes = [];
@@ -47,7 +47,6 @@ class _DashboardState extends State<Dashboard> {
   void loadData() async {
     _autos = await _controller.getAutos();
     _garajes = await _controller.getGarajes();
-    _reservaciones = await _controller.getReservaciones();
 
     //Loque esta en los requerimientos
     _topClientes = await _controller.getTopClientes();
@@ -78,145 +77,86 @@ class _DashboardState extends State<Dashboard> {
                     const HeaderWidget(
                         title: 'Hello, Bro 👋',
                         subtitle: 'Bienvenido al Dashboard de Parking System'),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Autos',
-                            items: _autos,
-                            displayFunction: (auto) =>
-                                'Placa: ${auto['placa']}',
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Garajes',
-                            items: _garajes,
-                            displayFunction: (garaje) =>
-                                'Dirección: ${garaje['direccion']}',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Reservaciones',
-                            items: _reservaciones,
-                            displayFunction: (reservacion) =>
-                                'ID: ${reservacion['id']}',
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                      ],
+                    CustomRowWidget(
+                      dynamicWidget: DynamicListWidget(
+                        title: 'Autos',
+                        items: _autos,
+                        displayFunction: (auto) => 'Placa: ${auto['placa']}',
+                      ),
+                      statisticWidget: DynamicListWidget(
+                        title: 'Garajes',
+                        items: _garajes,
+                        displayFunction: (garaje) =>
+                            'Dirección: ${garaje['direccion']}',
+                      ),
                     ),
                     //Parte de los requerimientos
                     //Totales
-                    Row(
-                      children: [
-                        Expanded(
-                          child: StatisticWidget(
-                            title: 'Total Garajes Disponibles',
-                            fetchDataFunction:
-                                _controller.getTotalGarajesDisponibles,
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: StatisticWidget(
-                            title: 'Total Garajes Ocupados',
-                            fetchDataFunction:
-                                _controller.getTotalGarajesOcupados,
-                          ),
-                        ),
-                      ],
+                    CustomRowWidget(
+                      dynamicWidget: StatisticWidget(
+                        title: 'Total Garajes Disponibles',
+                        fetchDataFunction:
+                            _controller.getTotalGarajesDisponibles,
+                      ),
+                      statisticWidget: StatisticWidget(
+                        title: 'Total Garajes Ocupados',
+                        fetchDataFunction: _controller.getTotalGarajesOcupados,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Reservaciones Confirmadas',
-                            items: _confirmadas,
-                            displayFunction: (item) =>
-                                '${item['nombre']} - Confirmadas: ${item['total_reservaciones_confirmadas']}',
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Reservaciones Rechazadas',
-                            items: _rechazadas,
-                            displayFunction: (item) =>
-                                '${item['nombre']} - Rechazadas: ${item['total_reservaciones_rechazadas']}',
-                          ),
-                        )
-                      ],
+
+                    CustomRowWidget(
+                      dynamicWidget: DynamicListWidget(
+                        title: 'Reservaciones Confirmadas',
+                        items: _confirmadas,
+                        displayFunction: (item) =>
+                            '${item['nombre']} - Confirmadas: ${item['total_reservaciones_confirmadas']}',
+                      ),
+                      statisticWidget: DynamicListWidget(
+                        title: 'Reservaciones Rechazadas',
+                        items: _rechazadas,
+                        displayFunction: (item) =>
+                            '${item['nombre']} - Rechazadas: ${item['total_reservaciones_rechazadas']}',
+                      ),
                     ),
                     //Rechazos
-                    Row(
-                      children: [
-                        Expanded(
-                          child: StatisticWidget(
-                            title: 'Total Rechazados por Cliente',
-                            fetchDataFunction:
-                                _controller.getRechazosPorCliente,
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: StatisticWidget(
-                            title: 'Total Rechazados por Ofertante',
-                            fetchDataFunction:
-                                _controller.getRechazosPorOfertantes,
-                          ),
-                        )
-                      ],
+                    CustomRowWidget(
+                      dynamicWidget: StatisticWidget(
+                        title: 'Total Rechazados por Cliente',
+                        fetchDataFunction: _controller.getRechazosPorCliente,
+                      ),
+                      statisticWidget: StatisticWidget(
+                        title: 'Total Rechazados por Ofertante',
+                        fetchDataFunction: _controller.getRechazosPorOfertantes,
+                      ),
                     ),
                     //Tops
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Top 20 Clientes',
-                            items: _topClientes,
-                            displayFunction: (cliente) =>
-                                '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Top 20 Ofertantes',
-                            items: _topOfertantes,
-                            displayFunction: (ofertante) =>
-                                '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
-                          ),
-                        )
-                      ],
+                    CustomRowWidget(
+                      dynamicWidget: DynamicListWidget(
+                        title: 'Top 20 Clientes',
+                        items: _topClientes,
+                        displayFunction: (cliente) =>
+                            '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                      ),
+                      statisticWidget: DynamicListWidget(
+                        title: 'Top 20 Ofertantes',
+                        items: _topOfertantes,
+                        displayFunction: (ofertante) =>
+                            '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Peores Clientes',
-                            items: _peoresClientes,
-                            displayFunction: (cliente) =>
-                                '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: DynamicListWidget(
-                            title: 'Peores Ofertantes',
-                            items: _peoresOfertantes,
-                            displayFunction: (ofertante) =>
-                                '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
-                          ),
-                        )
-                      ],
+                    CustomRowWidget(
+                      dynamicWidget: DynamicListWidget(
+                        title: 'Peores Clientes',
+                        items: _peoresClientes,
+                        displayFunction: (cliente) =>
+                            '${cliente['nombre_cliente']} - ${cliente['promedio_calificacion_clientes']}',
+                      ),
+                      statisticWidget: DynamicListWidget(
+                        title: 'Peores Ofertantes',
+                        items: _peoresOfertantes,
+                        displayFunction: (ofertante) =>
+                            '${ofertante['nombre_ofertante']} - ${ofertante['promedio_calificacion_garajes']}',
+                      ),
                     ),
                     DynamicListWidget(
                       title: 'Promedio precio garajes',
